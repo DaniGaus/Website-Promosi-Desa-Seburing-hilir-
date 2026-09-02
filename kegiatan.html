@@ -1,0 +1,23 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kegiatan | Desa Seburing</title><meta name="description" content="Website informasi Desa Seburing, Kecamatan Semparuk, Kabupaten Sambas, Kalimantan Barat."><link rel="stylesheet" href="style.css"></head><body><header class="topbar"><div class="container nav"><a class="brand" href="index.html"><img src="logo-sambas.jpg" alt="Lambang Kabupaten Sambas"><span>DESA SEBURING<small>Kecamatan Semparuk · Kabupaten Sambas</small></span></a>
+<button class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="Ganti mode terang/gelap">
+  <span class="theme-icon">☾</span><span class="theme-text">Mode</span>
+</button>
+<script>
+(function(){
+  const saved = localStorage.getItem('seburing-theme');
+  if(saved) document.documentElement.setAttribute('data-theme', saved);
+})();
+function toggleTheme(){
+  const html=document.documentElement;
+  const next=html.getAttribute('data-theme')==='dark'?'light':'dark';
+  html.setAttribute('data-theme',next);
+  localStorage.setItem('seburing-theme',next);
+  const icon=document.querySelector('.theme-icon');
+  if(icon) icon.textContent=next==='dark'?'☀':'☾';
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  const icon=document.querySelector('.theme-icon');
+  if(icon) icon.textContent=document.documentElement.getAttribute('data-theme')==='dark'?'☀':'☾';
+});
+</script>
+<button class="menu" onclick="document.querySelector('.navlinks').classList.toggle('open')" aria-label="Buka menu">☰</button><nav class="navlinks"><a class="" href="index.html">Beranda</a><a class="" href="profil.html">Profil</a><a class="" href="sejarah.html">Sejarah</a><a class="" href="ekonomi.html">Ekonomi</a><a class="active" href="kegiatan.html">Kegiatan</a><a class="" href="galeri.html">Galeri</a><a class="" href="wisata.html">Potensi</a><a href="lokasi.html">📍 Lokasi</a></nav></div></header><main><section class="pagehead"><div class="container"><span class="eyebrow">Kegiatan</span><h1>Gotong royong untuk desa</h1><p>Dokumentasi kegiatan masyarakat dalam penimbunan jembatan dan gorong-gorong di Desa Seburing.</p></div></section><section class="section"><div class="container"><div class="feature"><div class="card"><img src="gotong-royong-penimbunan-jembatan.jpg" alt="Kegiatan gotong royong penimbunan jembatan dan gorong-gorong"><div class="body"><h3>Penimbunan Jembatan & Gorong-gorong</h3><p>Kegiatan gotong royong masyarakat sebagai bentuk kepedulian terhadap akses dan lingkungan desa.</p></div></div><div class="prose"><h2>Semangat kebersamaan</h2><p>Gotong royong menjadi bagian penting kehidupan sosial masyarakat Seburing. Kegiatan bersama membantu memperbaiki akses lingkungan sekaligus memperkuat kebersamaan antarwarga.</p><div class="pillrow"><span class="pill">Gotong royong</span><span class="pill">Infrastruktur</span><span class="pill">Kebersamaan</span></div></div></div></div></section></main><footer class="footer"><div class="container footer-grid"><div><h3>Desa Seburing</h3><p>Kecamatan Semparuk, Kabupaten Sambas, Kalimantan Barat.</p><p class="small">Website informasi desa · © 2026</p></div><div><h3>Navigasi</h3><p>Profil · Sejarah · Ekonomi · Kegiatan · Galeri · Potensi</p></div></div></footer></body></html>

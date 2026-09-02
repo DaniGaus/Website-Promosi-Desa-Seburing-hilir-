@@ -1,0 +1,27 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sejarah | Desa Seburing</title><meta name="description" content="Website informasi Desa Seburing, Kecamatan Semparuk, Kabupaten Sambas, Kalimantan Barat."><link rel="stylesheet" href="style.css"></head><body><header class="topbar"><div class="container nav"><a class="brand" href="index.html"><img src="logo-sambas.jpg" alt="Lambang Kabupaten Sambas"><span>DESA SEBURING<small>Kecamatan Semparuk · Kabupaten Sambas</small></span></a>
+<button class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="Ganti mode terang/gelap">
+  <span class="theme-icon">☾</span><span class="theme-text">Mode</span>
+</button>
+<script>
+(function(){
+  const saved = localStorage.getItem('seburing-theme');
+  if(saved) document.documentElement.setAttribute('data-theme', saved);
+})();
+function toggleTheme(){
+  const html=document.documentElement;
+  const next=html.getAttribute('data-theme')==='dark'?'light':'dark';
+  html.setAttribute('data-theme',next);
+  localStorage.setItem('seburing-theme',next);
+  const icon=document.querySelector('.theme-icon');
+  if(icon) icon.textContent=next==='dark'?'☀':'☾';
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  const icon=document.querySelector('.theme-icon');
+  if(icon) icon.textContent=document.documentElement.getAttribute('data-theme')==='dark'?'☀':'☾';
+});
+</script>
+<button class="menu" onclick="document.querySelector('.navlinks').classList.toggle('open')" aria-label="Buka menu">☰</button><nav class="navlinks"><a class="" href="index.html">Beranda</a><a class="" href="profil.html">Profil</a><a class="active" href="sejarah.html">Sejarah</a><a class="" href="ekonomi.html">Ekonomi</a><a class="" href="kegiatan.html">Kegiatan</a><a class="" href="galeri.html">Galeri</a><a class="" href="wisata.html">Potensi</a><a href="lokasi.html">📍 Lokasi</a></nav></div></header><main><section class="history-hero">
+<div class="history-hero-media"><img src="sejarah-hero.jpg" alt="Ilustrasi sejarah dengan kompas dan peta"></div>
+<div class="history-hero-overlay"><div class="container"><span class="eyebrow">Sejarah Desa</span><h1>Sejarah Desa Seburing</h1><p>Mengenal asal-usul dan perjalanan Desa Seburing dari masa ke masa.</p></div></div>
+</section>
+<section class="pagehead"><div class="container"><span class="eyebrow">Sejarah</span><h1>Jejak perjalanan Desa Seburing</h1><p>Sejarah singkat mengenai asal-usul nama Seburing dan kepemimpinan desa.</p></div></section><section class="section"><div class="container"><div class="prose"><h2>Asal-usul</h2><p>Desa Seburing diperkirakan telah ada dan diresmikan sekitar tahun 1900. Nama “Seburing” dikaitkan dengan seorang tokoh perintis setempat yang dikenal sebagai Pak Buring.</p><p>Dalam perkembangannya, wilayah Seburing mengalami perubahan administrasi dan kepemimpinan hingga menjadi desa seperti sekarang.</p><h2>Perjalanan Kepemimpinan</h2><div class="timeline"><div class="item"><div class="year">1900–1943</div><div><b>Abdul Gafar Bin Haji Umar</b><br>Petinggi Kampung</div></div><div class="item"><div class="year">1943–1965</div><div><b>Machmud Nor</b></div></div><div class="item"><div class="year">1965–1998</div><div><b>Wadjidi</b></div></div><div class="item"><div class="year">1998–2006</div><div><b>Siswandi</b></div></div><div class="item"><div class="year">2006–2018</div><div><b>Sarwo Edi</b></div></div><div class="item"><div class="year">2018–2020</div><div><b>Aidi</b><br>Pelaksana tugas kepala desa selama kurang lebih 18 bulan.</div></div><div class="item"><div class="year">Jan 2020–sekarang</div><div><b>H. Siswandi, S.IPem.</b></div></div></div></div></div></section></main><footer class="footer"><div class="container footer-grid"><div><h3>Desa Seburing</h3><p>Kecamatan Semparuk, Kabupaten Sambas, Kalimantan Barat.</p><p class="small">Website informasi desa · © 2026</p></div><div><h3>Navigasi</h3><p>Profil · Sejarah · Ekonomi · Kegiatan · Galeri · Potensi</p></div></div></footer></body></html>

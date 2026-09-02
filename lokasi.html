@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lokasi | Desa Seburing</title>
+<meta name="description" content="Lokasi Desa Seburing, Kecamatan Semparuk, Kabupaten Sambas, Kalimantan Barat.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="container nav">
+    <a class="brand" href="index.html">
+      <img src="logo-sambas.jpg" alt="Lambang Kabupaten Sambas">
+      <span>DESA SEBURING<small>Kecamatan Semparuk · Kabupaten Sambas</small></span>
+    </a>
+    
+<button class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="Ganti mode terang/gelap">
+  <span class="theme-icon">☾</span><span class="theme-text">Mode</span>
+</button>
+<script>
+(function(){
+  const saved = localStorage.getItem('seburing-theme');
+  if(saved) document.documentElement.setAttribute('data-theme', saved);
+})();
+function toggleTheme(){
+  const html=document.documentElement;
+  const next=html.getAttribute('data-theme')==='dark'?'light':'dark';
+  html.setAttribute('data-theme',next);
+  localStorage.setItem('seburing-theme',next);
+  const icon=document.querySelector('.theme-icon');
+  if(icon) icon.textContent=next==='dark'?'☀':'☾';
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  const icon=document.querySelector('.theme-icon');
+  if(icon) icon.textContent=document.documentElement.getAttribute('data-theme')==='dark'?'☀':'☾';
+});
+</script>
+<button class="menu" onclick="document.querySelector('.navlinks').classList.toggle('open')" aria-label="Buka menu">☰</button>
+    <nav class="navlinks">
+      <a href="index.html">Beranda</a>
+      <a href="profil.html">Profil</a>
+      <a href="sejarah.html">Sejarah</a>
+      <a href="ekonomi.html">Ekonomi</a>
+      <a href="kegiatan.html">Kegiatan</a>
+      <a href="galeri.html">Galeri</a>
+      <a href="wisata.html">Potensi</a>
+      <a class="active" href="lokasi.html">📍 Lokasi</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="pagehead">
+    <div class="container">
+      <span class="eyebrow">📍 Lokasi Desa</span>
+      <h1>Lokasi Desa Seburing</h1>
+      <p>Temukan Desa Seburing, Kecamatan Semparuk, Kabupaten Sambas melalui Google Maps.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="map-card">
+        <h2 style="font-family:Manrope;margin-top:0">Desa Seburing</h2>
+        <p>Jln. Pendidikan Seburing, Desa Seburing, Kecamatan Semparuk, Kabupaten Sambas, Kalimantan Barat, Kode Pos 79453.</p>
+        <p><strong>Wilayah:</strong> Kecamatan Semparuk, Kabupaten Sambas, Kalimantan Barat.</p>
+        <div class="actions">
+          <a class="btn primary" href="https://maps.app.goo.gl/opbwyDfFoYc457RQ6" target="_blank" rel="noopener">📍 Buka Google Maps</a>
+          <a class="btn secondary" href="index.html">← Kembali ke Beranda</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div>
+      <h3>Desa Seburing</h3>
+      <p>Kecamatan Semparuk, Kabupaten Sambas, Kalimantan Barat.</p>
+      <p class="small">Website informasi desa · © 2026</p>
+    </div>
+    <div>
+      <h3>Navigasi</h3>
+      <p>Profil · Sejarah · Ekonomi · Kegiatan · Galeri · Potensi · Lokasi</p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

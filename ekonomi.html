@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ekonomi | Desa Seburing</title>
+<meta name="description" content="Potensi ekonomi masyarakat Desa Seburing, Kecamatan Semparuk, Kabupaten Sambas.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar"><div class="container nav">
+<a class="brand" href="index.html"><img src="logo-sambas.jpg" alt="Lambang Kabupaten Sambas"><span>DESA SEBURING<small>Kecamatan Semparuk · Kabupaten Sambas</small></span></a>
+
+<button class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="Ganti mode terang/gelap">
+  <span class="theme-icon">☾</span><span class="theme-text">Mode</span>
+</button>
+<script>
+(function(){
+  const saved = localStorage.getItem('seburing-theme');
+  if(saved) document.documentElement.setAttribute('data-theme', saved);
+})();
+function toggleTheme(){
+  const html=document.documentElement;
+  const next=html.getAttribute('data-theme')==='dark'?'light':'dark';
+  html.setAttribute('data-theme',next);
+  localStorage.setItem('seburing-theme',next);
+  const icon=document.querySelector('.theme-icon');
+  if(icon) icon.textContent=next==='dark'?'☀':'☾';
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  const icon=document.querySelector('.theme-icon');
+  if(icon) icon.textContent=document.documentElement.getAttribute('data-theme')==='dark'?'☀':'☾';
+});
+</script>
+<button class="menu" onclick="document.querySelector('.navlinks').classList.toggle('open')" aria-label="Buka menu">☰</button>
+<nav class="navlinks"><a href="index.html">Beranda</a><a href="profil.html">Profil</a><a href="sejarah.html">Sejarah</a><a class="active" href="ekonomi.html">Ekonomi</a><a href="kegiatan.html">Kegiatan</a><a href="galeri.html">Galeri</a><a href="wisata.html">Potensi</a><a href="lokasi.html">📍 Lokasi</a></nav>
+</div></header>
+<main>
+<section class="pagehead"><div class="container"><span class="eyebrow">Ekonomi Desa</span><h1>Potensi Ekonomi Seburing</h1><p>Beragam kegiatan masyarakat menjadi bagian dari roda ekonomi Desa Seburing, mulai dari pertanian, perkebunan, peternakan hingga usaha lokal.</p></div></section>
+<section class="section"><div class="container">
+<div class="cards">
+<div class="card"><img src="peternakan-kambing.jpg" alt="Peternakan kambing Desa Seburing"><div class="body"><h3>Peternakan</h3><p>Peternakan kambing menjadi salah satu potensi usaha masyarakat yang dapat dikembangkan untuk mendukung ekonomi keluarga dan usaha produktif desa.</p></div></div>
+<div class="card"><img src="persawahan-desa-seburing.jpg" alt="Persawahan Desa Seburing"><div class="body"><h3>Pertanian</h3><p>Lahan persawahan menjadi bagian penting dari aktivitas ekonomi dan sumber penghidupan masyarakat Desa Seburing.</p></div></div>
+<div class="card"><img src="perkebunan-kelapa-sawit.jpg" alt="Perkebunan kelapa sawit Desa Seburing"><div class="body"><h3>Perkebunan</h3><p>Perkebunan kelapa sawit merupakan salah satu potensi lahan yang dapat mendukung kegiatan ekonomi masyarakat.</p></div></div>
+</div>
+<div class="prose" style="margin-top:20px"><h2>Penguatan ekonomi masyarakat</h2><p>Pengembangan ekonomi desa dapat diarahkan pada peningkatan produktivitas pertanian, peternakan dan perkebunan, pengolahan hasil, usaha mikro, pemasaran produk lokal, serta penguatan kelembagaan ekonomi desa.</p><p>Dokumentasi dan informasi pada halaman ini menjadi bagian dari upaya mengenalkan potensi ekonomi Desa Seburing secara lebih dekat.</p></div>
+</div></section>
+</main>
+<footer class="footer"><div class="container footer-grid"><div><h3>Desa Seburing</h3><p>Kecamatan Semparuk, Kabupaten Sambas, Kalimantan Barat.</p><p class="small">Website informasi desa · © 2026</p></div><div><h3>Navigasi</h3><p>Profil · Sejarah · Ekonomi · Kegiatan · Galeri · Potensi</p></div></div></footer>
+</body></html>

@@ -1,0 +1,23 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Galeri | Desa Seburing</title><meta name="description" content="Website informasi Desa Seburing, Kecamatan Semparuk, Kabupaten Sambas, Kalimantan Barat."><link rel="stylesheet" href="style.css"></head><body><header class="topbar"><div class="container nav"><a class="brand" href="index.html"><img src="logo-sambas.jpg" alt="Lambang Kabupaten Sambas"><span>DESA SEBURING<small>Kecamatan Semparuk · Kabupaten Sambas</small></span></a>
+<button class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="Ganti mode terang/gelap">
+  <span class="theme-icon">☾</span><span class="theme-text">Mode</span>
+</button>
+<script>
+(function(){
+  const saved = localStorage.getItem('seburing-theme');
+  if(saved) document.documentElement.setAttribute('data-theme', saved);
+})();
+function toggleTheme(){
+  const html=document.documentElement;
+  const next=html.getAttribute('data-theme')==='dark'?'light':'dark';
+  html.setAttribute('data-theme',next);
+  localStorage.setItem('seburing-theme',next);
+  const icon=document.querySelector('.theme-icon');
+  if(icon) icon.textContent=next==='dark'?'☀':'☾';
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  const icon=document.querySelector('.theme-icon');
+  if(icon) icon.textContent=document.documentElement.getAttribute('data-theme')==='dark'?'☀':'☾';
+});
+</script>
+<button class="menu" onclick="document.querySelector('.navlinks').classList.toggle('open')" aria-label="Buka menu">☰</button><nav class="navlinks"><a class="" href="index.html">Beranda</a><a class="" href="profil.html">Profil</a><a class="" href="sejarah.html">Sejarah</a><a class="" href="ekonomi.html">Ekonomi</a><a class="" href="kegiatan.html">Kegiatan</a><a class="active" href="galeri.html">Galeri</a><a class="" href="wisata.html">Potensi</a><a href="lokasi.html">📍 Lokasi</a></nav></div></header><main><section class="pagehead"><div class="container"><span class="eyebrow">Dokumentasi</span><h1>Galeri Desa Seburing</h1><p>Sembilan foto pilihan Desa Seburing, disusun sesuai urutan dokumentasi.</p></div></section><section class="section"><div class="container"><div class="gallery"><figure><img src="persawahan-desa-seburing.jpg" alt="Persawahan Desa Seburing"><figcaption>1. Persawahan Desa Seburing<small>Lahan pertanian desa.</small></figcaption></figure><figure><img src="perkebunan-kelapa-sawit.jpg" alt="Perkebunan kelapa sawit"><figcaption>2. Perkebunan Kelapa Sawit<small>Lanskap perkebunan.</small></figcaption></figure><figure><img src="jalan-desa-seburing-hilir.jpg" alt="Jalan Desa Seburing Hilir"><figcaption>3. Jalan Desa Seburing Hilir<small>Akses lingkungan desa.</small></figcaption></figure><figure><img src="sungai-desa-seburing-hilir.jpg" alt="Sungai Desa Seburing Hilir"><figcaption>4. Sungai Desa Seburing Hilir<small>Saluran air dan lingkungan.</small></figcaption></figure><figure><img src="gotong-royong-penimbunan-jembatan.jpg" alt="Gotong royong penimbunan jembatan dan gorong-gorong"><figcaption>5. Gotong Royong Penimbunan Jembatan & Gorong-gorong<small>Kegiatan masyarakat.</small></figcaption></figure><figure><img src="madrasah-ibtidaiyah-nurul-huda.jpg" alt="Madrasah Ibtidaiyah Nurul Huda Seburing"><figcaption>6. Madrasah Ibtidaiyah Nurul Huda Seburing<small>Fasilitas pendidikan.</small></figcaption></figure><figure><img src="ppaud-nur-huda.jpg" alt="PPAUD Nur-Huda"><figcaption>7. PPAUD Nur-Huda<small>Pendidikan anak usia dini.</small></figcaption></figure><figure><img src="posyandu-mawar-merah.jpg" alt="Posyandu Mawar Merah"><figcaption>8. Posyandu Mawar Merah<small>Pelayanan masyarakat.</small></figcaption></figure><figure><img src="masjid-al-ikhsan.jpg" alt="Masjid Al-Ikhsan Desa Seburing"><figcaption>9. Masjid Al-Ikhsan<small>Tempat ibadah dan kegiatan keagamaan masyarakat.</small></figcaption></figure></div></div></section></main><footer class="footer"><div class="container footer-grid"><div><h3>Desa Seburing</h3><p>Kecamatan Semparuk, Kabupaten Sambas, Kalimantan Barat.</p><p class="small">Website informasi desa · © 2026</p></div><div><h3>Navigasi</h3><p>Profil · Sejarah · Ekonomi · Kegiatan · Galeri · Potensi</p></div></div></footer></body></html>

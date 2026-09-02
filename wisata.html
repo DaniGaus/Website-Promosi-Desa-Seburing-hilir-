@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Potensi | Desa Seburing</title>
+<meta name="description" content="Potensi dan lingkungan Desa Seburing, Kecamatan Semparuk, Kabupaten Sambas.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar"><div class="container nav">
+<a class="brand" href="index.html"><img src="logo-sambas.jpg" alt="Lambang Kabupaten Sambas"><span>DESA SEBURING<small>Kecamatan Semparuk · Kabupaten Sambas</small></span></a>
+<button class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="Ganti mode terang/gelap"><span class="theme-icon">☾</span><span class="theme-text">Mode</span></button>
+<button class="menu" onclick="document.querySelector('.navlinks').classList.toggle('open')" aria-label="Buka menu">☰</button>
+<nav class="navlinks"><a href="index.html">Beranda</a><a href="profil.html">Profil</a><a href="sejarah.html">Sejarah</a><a href="ekonomi.html">Ekonomi</a><a href="kegiatan.html">Kegiatan</a><a href="galeri.html">Galeri</a><a class="active" href="wisata.html">Potensi</a><a href="lokasi.html">📍 Lokasi</a></nav>
+</div></header>
+<main>
+<section class="pagehead"><div class="container"><span class="eyebrow">🌱 Potensi Desa</span>
+<h1>Potensi Seburing</h1><p>Beragam sumber daya alam, kegiatan masyarakat, dan fasilitas desa yang menjadi bagian dari kehidupan Desa Seburing.</p></div></section>
+<section class="section"><div class="container"><div class="cards">
+<a class="card" href="ekonomi.html"><img src="persawahan-desa-seburing.jpg" alt="Persawahan Desa Seburing"><div class="body"><h3>Pertanian</h3><p>Hamparan persawahan menjadi salah satu potensi utama desa.</p></div></a>
+<a class="card" href="ekonomi.html"><img src="perkebunan-kelapa-sawit.jpg" alt="Perkebunan kelapa sawit"><div class="body"><h3>Perkebunan</h3><p>Perkebunan dan tanaman masyarakat mendukung aktivitas ekonomi warga.</p></div></a>
+<a class="card" href="ekonomi.html"><img src="peternakan-kambing.jpg" alt="Peternakan kambing"><div class="body"><h3>Peternakan</h3><p>Peternakan rakyat menjadi bagian dari potensi ekonomi masyarakat.</p></div></a>
+<a class="card" href="galeri.html"><img src="sungai-desa-seburing-hilir.jpg" alt="Sungai Desa Seburing Hilir"><div class="body"><h3>Sungai & Lingkungan</h3><p>Lingkungan perairan dan jalur desa memiliki nilai penting bagi kehidupan warga.</p></div></a>
+<a class="card" href="galeri.html"><img src="jalan-desa-seburing-hilir.jpg" alt="Jalan Desa Seburing Hilir"><div class="body"><h3>Akses Desa</h3><p>Jalan lingkungan menghubungkan aktivitas masyarakat antarkawasan.</p></div></a>
+<a class="card" href="galeri.html"><img src="masjid-al-ikhsan.jpg" alt="Masjid Al-Ikhsan"><div class="body"><h3>Sarana Masyarakat</h3><p>Fasilitas pendidikan, sosial, dan keagamaan mendukung kehidupan desa.</p></div></a>
+</div></div></section>
+<section class="section alt"><div class="container"><div class="prose"><h2>Arah Pengembangan Potensi</h2>
+<p>Potensi desa dapat dikembangkan melalui pengolahan hasil pertanian dan perkebunan, penguatan peternakan rakyat, usaha mikro, pemasaran produk lokal, serta pengelolaan kelembagaan ekonomi desa.</p>
+<div class="pillrow"><span class="pill">Pertanian</span><span class="pill">Perkebunan</span><span class="pill">Peternakan</span><span class="pill">UMKM</span><span class="pill">Lingkungan</span></div>
+</div></div></section>
+</main>
+<footer class="footer"><div class="container footer-grid"><div><h3>Desa Seburing</h3><p>Kecamatan Semparuk, Kabupaten Sambas, Kalimantan Barat.</p><p class="small">Website informasi desa · © 2026</p></div><div><h3>Navigasi</h3><p>Profil · Sejarah · Ekonomi · Kegiatan · Galeri · Potensi</p></div></div></footer>
+<script>(function(){const s=localStorage.getItem('seburing-theme');if(s)document.documentElement.setAttribute('data-theme',s);})();function toggleTheme(){const h=document.documentElement,n=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',n);localStorage.setItem('seburing-theme',n);const i=document.querySelector('.theme-icon');if(i)i.textContent=n==='dark'?'☀':'☾'}document.addEventListener('DOMContentLoaded',()=>{const i=document.querySelector('.theme-icon');if(i)i.textContent=document.documentElement.getAttribute('data-theme')==='dark'?'☀':'☾'});</script>
+</body></html>
