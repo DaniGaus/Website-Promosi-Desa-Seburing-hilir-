@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Database Pengaduan &amp; Saran | Admin Desa Seburing</title>
+<link rel="stylesheet" href="style.css">
+<script>
+(function(){
+  const t=localStorage.getItem('seburing-theme');if(t)document.documentElement.setAttribute('data-theme',t);
+  // Belum login? kembali ke halaman login.
+  if(!sessionStorage.getItem('seburing-admin-token'))location.replace('admin.html');
+})();
+</script>
+</head>
+<body>
+<header class="topbar"><div class="container nav">
+  <a class="brand" href="index.html"><img src="logo-sambas.jpg" alt="Logo"><span>ADMIN DESA SEBURING<small>Database Pengaduan &amp; Saran</small></span></a>
+  <button class="btn primary" id="logoutBtn" type="button">Keluar</button>
+</div></header>
+
+<!-- ===== Panel "Buat Akun Admin Baru" (tersembunyi, dibuka dari tombol) ===== -->
+<div class="section" id="newAccountPanel" hidden>
+  <div class="container">
+    <div class="form-card login-card" style="max-width:480px">
+      <h2>Buat Akun Admin Baru</h2>
+      <p class="hint">Username, password, dan email lama akan digantikan akun baru ini. Sesi kamu yang sedang login tidak akan keluar.</p>
+      <form id="newAccountForm" autocomplete="off">
+        <div class="field"><label for="naUser">Username Baru</label><input id="naUser" type="text" minlength="3" required></div>
+        <div class="field"><label for="naEmail">Email Pemulihan Baru</label><input id="naEmail" type="email" required></div>
+        <div class="field"><label for="naPass">Password Baru</label><input id="naPass" type="password" autocomplete="new-password" minlength="6" required></div>
+        <div class="field"><label for="naPass2">Ulangi Password Baru</label><input id="naPass2" type="password" autocomplete="new-password" minlength="6" required></div>
+        <div class="actions">
+          <button class="btn primary" type="submit" id="naBtn">Simpan Akun Baru</button>
+          <button class="btn" type="button" id="naCancel">Batal</button>
+        </div>
+        <p id="naStatus" class="form-status" role="status"></p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<main>
+  <section class="pagehead"><div class="container">
+    <span class="eyebrow">🗄️ Langkah 2 · Database</span>
+    <h1>Nama, Email, Pengaduan &amp; Saran</h1>
+    <p>Data yang dikirim warga lewat formulir website.</p>
+  </div></section>
+  <section class="section"><div class="container">
+    <div class="admin-stats">
+      <div><b id="stTotal">–</b><span>Total</span></div>
+      <div><b id="stAduan">–</b><span>Pengaduan</span></div>
+      <div><b id="stSaran">–</b><span>Saran</span></div>
+      <div><b id="stBaru">–</b><span>Belum diproses</span></div>
+    </div>
+
+    <div class="admin-bar">
+      <div class="left">
+        <input id="q" type="search" placeholder="Cari nama / email / isi…">
+        <select id="fJenis"><option value="">Semua jenis</option><option>Pengaduan</option><option>Saran</option><option>Lain-lain</option></select>
+        <select id="fStatus"><option value="">Semua status</option><option>Baru</option><option>Diproses</option><option>Selesai</option></select>
+      </div>
+      <div class="right">
+        <button class="btn" id="refreshBtn" type="button">↻ Muat Ulang</button>
+        <a class="btn" id="sheetLink" href="#" target="_blank" rel="noopener" hidden>Buka Google Sheet</a>
+        <a class="btn" id="adminSheetLink" href="#" target="_blank" rel="noopener" hidden>👤 Lihat Akun Admin</a>
+        <button class="btn" id="newAccountBtn" type="button">🆕 Buat Akun Baru</button>
+      </div>
+    </div>
+    <p id="status" class="form-status" role="status">Memuat data…</p>
+
+    <div class="table-wrap"><table class="data-table">
+      <thead><tr><th>Waktu</th><th>Nama</th><th>Email</th><th>Jenis</th><th>Pengaduan / Saran</th><th>Status</th></tr></thead>
+      <tbody id="body"><tr><td colspan="6">Memuat…</td></tr></tbody>
+    </table></div>
+  </div></section>
+</main>
+
+<script>
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbxsXZ7B1mIwzrtJUxFsGqT-24MgtmvgsVRp7sgVojYvdaJHBFu-uy19mqmpU6cYR5QO/exec";
+const TOKEN_KEY='seburing-admin-token';
+const $=id=>document.getElementById(id);
+let allRows=[],loading=false;
+
+function esc(s){return String(s??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;')}
+function setStatus(t,cls){const s=$('status');s.textContent=t;s.className='form-status'+(cls?' '+cls:'')}
+const OLD_MSG='Backend Google Apps Script masih versi lama. Salin Code.gs terbaru lalu Deploy > Manage deployments > Edit > New version.';
+function friendly(m){return /wajib diisi|Aksi tidak dikenal/i.test(m||'')?OLD_MSG:m}
+function token(){return sessionStorage.getItem(TOKEN_KEY)||''}
+function goLogin(expired){sessionStorage.removeItem(TOKEN_KEY);location.replace('admin.html'+(expired?'?expired=1':''))}
+
+async function api(payload,tries=2){
+  let lastErr;
+  for(let i=0;i<tries;i++){
+    try{
+      const r=await fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
+      return await r.json();
+    }catch(e){lastErr=e;await new Promise(r=>setTimeout(r,800))}
+  }
+  throw lastErr;
+}
+
+async function loadData(){
+  if(loading)return;loading=true;
+  const btn=$('refreshBtn');btn.disabled=true;setStatus('Memuat data…');
+  try{
+    const j=await api({action:'list',token:token()});
+    if(j.status!=='success'){
+      if(j.expired)return goLogin(true);
+      throw Error(friendly(j.message)||'Gagal memuat');
+    }
+    allRows=j.rows||[];
+    if(j.sheetUrl){const a=$('sheetLink');a.href=j.sheetUrl;a.hidden=false}
+    if(j.adminSheetUrl){const a=$('adminSheetLink');a.href=j.adminSheetUrl;a.hidden=false}
+    render();setStatus('');
+  }catch(err){
+    // Gagal jaringan/server: tetap di halaman ini, jangan keluar dari login.
+    setStatus('Gagal memuat data ('+err.message+'). Tekan "Muat Ulang" untuk mencoba lagi.','err');
+  }finally{loading=false;btn.disabled=false}
+}
+
+function render(){
+  const q=$('q').value.trim().toLowerCase(),fj=$('fJenis').value,fs=$('fStatus').value;
+  const rows=allRows.filter(x=>(!fj||x.jenis===fj)&&(!fs||x.status===fs)&&(!q||(x.nama+' '+x.email+' '+x.pesan).toLowerCase().includes(q)));
+  $('stTotal').textContent=allRows.length;
+  $('stAduan').textContent=allRows.filter(x=>x.jenis==='Pengaduan').length;
+  $('stSaran').textContent=allRows.filter(x=>x.jenis==='Saran').length;
+  $('stBaru').textContent=allRows.filter(x=>x.status==='Baru').length;
+  $('body').innerHTML=rows.length?rows.map(x=>`<tr>
+    <td>${esc(x.waktu)}</td><td>${esc(x.nama)}</td><td>${esc(x.email)}</td>
+    <td><span class="pill ${x.jenis==='Saran'?'saran':(x.jenis==='Lain-lain'?'lain':'')}">${esc(x.jenis)}</span></td>
+    <td class="msg">${esc(x.pesan)}</td>
+    <td><select data-id="${esc(x.id)}">${['Baru','Diproses','Selesai'].map(s=>`<option ${x.status===s?'selected':''}>${s}</option>`).join('')}</select></td>
+  </tr>`).join(''):'<tr><td colspan="6">Belum ada data.</td></tr>';
+}
+
+$('body').addEventListener('change',async e=>{
+  const s=e.target.closest('select[data-id]');if(!s)return;
+  const row=allRows.find(x=>x.id===s.dataset.id),old=row?row.status:'Baru';
+  s.disabled=true;
+  try{
+    const j=await api({action:'update',id:s.dataset.id,status:s.value,token:token()});
+    if(j.status!=='success'){if(j.expired)return goLogin(true);throw Error(friendly(j.message)||'Gagal memperbarui')}
+    if(row)row.status=s.value;
+    $('stBaru').textContent=allRows.filter(x=>x.status==='Baru').length;
+    setStatus('Status diperbarui.','ok');
+  }catch(err){s.value=old;setStatus('Status belum diperbarui: '+err.message,'err')}
+  finally{s.disabled=false}
+});
+
+$('logoutBtn').addEventListener('click',async()=>{
+  const t=token();
+  try{await api({action:'logout',token:t},1)}catch(_){}
+  goLogin(false);
+});
+
+// -------- Buat Akun Admin Baru --------
+$('newAccountBtn').addEventListener('click',()=>{
+  $('newAccountPanel').hidden=false;
+  $('newAccountPanel').scrollIntoView({behavior:'smooth',block:'start'});
+  $('naUser').focus();
+});
+$('naCancel').addEventListener('click',()=>{
+  $('newAccountPanel').hidden=true;
+  $('newAccountForm').reset();
+  $('naStatus').textContent='';$('naStatus').className='form-status';
+});
+$('newAccountForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const st=$('naStatus'),btn=$('naBtn');
+  st.textContent='';st.className='form-status';
+  const user=$('naUser').value.trim(),email=$('naEmail').value.trim(),p1=$('naPass').value,p2=$('naPass2').value;
+  if(p1!==p2){st.textContent='Password dan ulangi password tidak sama.';st.classList.add('err');return}
+  if(p1.length<6){st.textContent='Password minimal 6 karakter.';st.classList.add('err');return}
+  btn.disabled=true;btn.textContent='Menyimpan…';
+  try{
+    const j=await api({action:'newAccount',username:user,email:email,password:p1,token:token()});
+    if(j.status!=='success'){if(j.expired)return goLogin(true);throw Error(friendly(j.message)||'Gagal membuat akun baru')}
+    st.textContent='Akun admin baru berhasil dibuat. Username/password lama sudah tidak berlaku.';st.classList.add('ok');
+    $('newAccountForm').reset();
+  }catch(err){
+    st.textContent='Gagal: '+err.message;st.classList.add('err');
+  }finally{
+    btn.disabled=false;btn.textContent='Simpan Akun Baru';
+  }
+});
+
+['q','fJenis','fStatus'].forEach(id=>$(id).addEventListener('input',render));
+$('refreshBtn').addEventListener('click',loadData);
+loadData();
+</script>
+</body>
+</html>

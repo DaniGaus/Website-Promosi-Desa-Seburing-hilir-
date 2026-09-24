@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Database Website Promosi Desa Seburing | Desa Seburing</title>
+<meta name="description" content="Database Website Promosi Desa Seburing — buku tamu Nama, Email, dan Pesan warga/pengunjung, tersimpan di Google Sheet.">
+<link rel="stylesheet" href="style.css">
+<script>
+(function(){
+  const t=localStorage.getItem('seburing-theme');if(t)document.documentElement.setAttribute('data-theme',t);
+  // Formulir ini wajib login dulu.
+  if(!sessionStorage.getItem('seburing-admin-token'))location.replace('admin.html?next=database.html');
+})();
+</script>
+</head>
+<body>
+<header class="topbar">
+  <div class="container nav">
+    <a class="brand" href="index.html">
+      <img src="logo-sambas.jpg" alt="Lambang Kabupaten Sambas">
+      <span>DESA SEBURING<small>Kecamatan Semparuk · Kabupaten Sambas</small></span>
+    </a>
+
+<button class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="Ganti mode terang/gelap">
+  <span class="theme-icon">☾</span><span class="theme-text">Mode</span>
+</button>
+<script>
+(function(){
+  const saved = localStorage.getItem('seburing-theme');
+  if(saved) document.documentElement.setAttribute('data-theme', saved);
+})();
+function toggleTheme(){
+  const html=document.documentElement;
+  const next=html.getAttribute('data-theme')==='dark'?'light':'dark';
+  html.setAttribute('data-theme',next);
+  localStorage.setItem('seburing-theme',next);
+  const icon=document.querySelector('.theme-icon');
+  if(icon) icon.textContent=next==='dark'?'☀':'☾';
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  const icon=document.querySelector('.theme-icon');
+  if(icon) icon.textContent=document.documentElement.getAttribute('data-theme')==='dark'?'☀':'☾';
+});
+</script>
+<button class="menu" onclick="document.querySelector('.navlinks').classList.toggle('open')" aria-label="Buka menu">☰</button>
+    <nav class="navlinks">
+      <a href="index.html">Beranda</a>
+      <a href="profil.html">Profil</a>
+      <a href="sejarah.html">Sejarah</a>
+      <a href="ekonomi.html">Ekonomi</a>
+      <a href="kegiatan.html">Kegiatan</a>
+      <a href="galeri.html">Galeri</a>
+      <a href="wisata.html">Potensi</a>
+      <a href="lokasi.html">📍 Lokasi</a>
+      <a class="active" href="database.html">🗄️ Database</a>
+      <a href="#" id="logoutLink">🔓 Keluar</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="pagehead">
+    <div class="container">
+      <span class="eyebrow">🗄️ Database Website</span>
+      <h1>Database Website Promosi Desa Seburing</h1>
+      <p>Kamu sudah login. Isi Nama, Email, Pesan, dan Jenis di bawah ini. Data akan tersimpan otomatis ke database (Google Sheet) desa.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="form-card">
+        <h2>Formulir Nama, Email, Pesan, Pengaduan/Saran &amp; Lain-lain</h2>
+        <p class="hint">Data yang kamu kirim akan masuk ke Database Website Promosi Desa Seburing dan bisa dilihat oleh admin desa.</p>
+
+        <form id="dbForm">
+          <div class="field">
+            <label for="nama">Nama</label>
+            <input type="text" id="nama" name="nama" placeholder="Nama lengkap" required>
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="nama@email.com" required>
+          </div>
+          <div class="field">
+            <label for="pesan">Isi Pesan</label>
+            <textarea id="pesan" name="pesan" placeholder="Tulis pengaduan, saran, atau hal lain untuk Desa Seburing" required></textarea>
+          </div>
+          <div class="field">
+            <label for="jenis">Jenis</label>
+            <select id="jenis" name="jenis" required>
+              <option value="Pengaduan">Pengaduan</option>
+              <option value="Saran">Saran</option>
+              <option value="Lain-lain">Lain-lain</option>
+            </select>
+          </div>
+          <div class="actions">
+            <button class="btn primary" type="submit" id="submitBtn">Kirim ke Database</button>
+          </div>
+          <p class="form-status" id="formStatus"></p>
+        </form>
+
+        <div class="config-note" id="configNote">
+          ⚙️ <strong>Catatan setup:</strong> Ganti nilai <code>SCRIPT_URL</code> di bagian bawah file <code>database.html</code> dengan URL Web App Google Apps Script kamu sendiri agar formulir ini benar-benar tersimpan ke Google Sheet.
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <h2 style="font-family:Manrope;margin:0 0 6px">Pengaduan Warga</h2>
+        <p class="hint" style="margin:0">Pengaduan dikirim ke admin desa. Data tidak ditampilkan di halaman publik.</p>
+        <p style="margin-top:14px"><a class="btn primary" href="admin.html">🔐 Login Admin →</a></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div>
+      <h3>Desa Seburing</h3>
+      <p>Kecamatan Semparuk, Kabupaten Sambas, Kalimantan Barat.</p>
+      <p class="small">Website informasi desa · © 2026</p>
+    </div>
+    <div>
+      <h3>Navigasi</h3>
+      <p>Profil · Sejarah · Ekonomi · Kegiatan · Galeri · Potensi · Lokasi · Database</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// =====================================================================
+// GANTI baris di bawah ini dengan URL Web App Apps Script kamu sendiri.
+// Contoh: "https://script.google.com/macros/s/AKfycbxxxxxxxxxx/exec"
+// =====================================================================
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxsXZ7B1mIwzrtJUxFsGqT-24MgtmvgsVRp7sgVojYvdaJHBFu-uy19mqmpU6cYR5QO/exec";
+
+const form = document.getElementById('dbForm');
+const statusEl = document.getElementById('formStatus');
+const submitBtn = document.getElementById('submitBtn');
+const dataBody = document.getElementById('dataBody');
+
+function isConfigured(){
+  return SCRIPT_URL && SCRIPT_URL.indexOf('https://script.google.com') === 0;
+}
+
+form.addEventListener('submit', async function(e){
+  e.preventDefault();
+  statusEl.textContent = '';
+  statusEl.className = 'form-status';
+
+  if(!isConfigured()){
+    statusEl.textContent = 'Belum terhubung ke database: atur SCRIPT_URL dulu di database.html.';
+    statusEl.classList.add('err');
+    return;
+  }
+
+  const token = sessionStorage.getItem('seburing-admin-token');
+  if(!token){ location.replace('admin.html?next=database.html'); return; }
+
+  const payload = {
+    token: token,
+    nama: document.getElementById('nama').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    jenis: document.getElementById('jenis').value,
+    pesan: document.getElementById('pesan').value.trim()
+  };
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Mengirim…';
+
+  try{
+    const res = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'text/plain;charset=utf-8'},
+      body: JSON.stringify(payload)
+    });
+    const result = await res.json();
+    if(result && result.status === 'success'){
+      statusEl.textContent = 'Terima kasih, data kamu tersimpan di database.';
+      statusEl.classList.add('ok');
+      form.reset();
+    } else if(result && result.expired){
+      sessionStorage.removeItem('seburing-admin-token');
+      location.replace('admin.html?next=database.html&expired=1');
+      return;
+    } else {
+      throw new Error(result && result.message ? result.message : 'Gagal menyimpan data');
+    }
+  }catch(err){
+    statusEl.textContent = 'Gagal mengirim data. Coba lagi (' + err.message + ').';
+    statusEl.classList.add('err');
+  }finally{
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Kirim ke Database';
+  }
+});
+
+const logoutLink = document.getElementById('logoutLink');
+if(logoutLink){
+  logoutLink.addEventListener('click', async function(e){
+    e.preventDefault();
+    const t = sessionStorage.getItem('seburing-admin-token');
+    if(t){
+      try{
+        await fetch(SCRIPT_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify({action:'logout', token:t})});
+      }catch(_){}
+    }
+    sessionStorage.removeItem('seburing-admin-token');
+    location.replace('admin.html?next=database.html');
+  });
+}
+
+function escapeHtml(str){
+  if(str === undefined || str === null) return '';
+  return String(str)
+    .replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')
+    .replaceAll('"','&quot;').replaceAll("'",'&#039;');
+}
+
+</script>
+</body>
+</html>
