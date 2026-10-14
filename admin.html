@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Login Admin | Desa Seburing</title>
+<link rel="stylesheet" href="style.css">
+<script>
+(function(){
+  const t=localStorage.getItem('seburing-theme');if(t)document.documentElement.setAttribute('data-theme',t);
+  if(sessionStorage.getItem('seburing-admin-token')){
+    const next=new URLSearchParams(location.search).get('next');
+    location.replace(next==='database.html'?'database.html':'admin-data.html');
+  }
+})();
+</script>
+<style>
+.linklike{background:none;border:none;padding:0;color:var(--green2);font-weight:700;font-size:14px;cursor:pointer;text-decoration:underline}
+.pw-wrap{position:relative}
+.pw-wrap input{padding-right:46px;width:100%;box-sizing:border-box}
+.pw-eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:36px;height:36px;border:none;background:none;color:var(--muted);cursor:pointer;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.pw-eye:hover,.pw-eye:focus-visible{color:var(--green);outline:none;background:var(--mint)}
+.pw-eye svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.choice[hidden]{display:none}
+.choice{display:grid;gap:14px;max-width:440px;margin:0 auto}
+.choice button{display:flex;align-items:center;gap:14px;text-align:left;width:100%;padding:18px 20px;border-radius:18px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;font-family:inherit;transition:.15s}
+.choice button:hover,.choice button:focus-visible{border-color:var(--green);transform:translateY(-2px);box-shadow:0 10px 24px rgba(7,59,43,.10);outline:none}
+.choice .ic{font-size:30px;line-height:1}
+.choice strong{display:block;font-size:17px;font-weight:800}
+.choice small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="container nav">
+  <a class="brand" href="index.html"><img src="logo-sambas.jpg" alt="Logo"><span>ADMIN DESA SEBURING<small>Login Admin</small></span></a>
+  <a class="btn" href="database.html">Form Warga</a>
+</div></header>
+
+<main>
+  <section class="pagehead"><div class="container">
+    <span class="eyebrow" id="pageEyebrow">🔐 Masuk ke Halaman Admin</span>
+    <h1 id="loginTitle">Memeriksa akun admin…</h1>
+    <p id="loginDesc">Mohon tunggu sebentar.</p>
+  </div></section>
+  <section class="section"><div class="container">
+
+    <!-- ===== PILIHAN AWAL: Buat Akun atau Login Langsung ===== -->
+    <div class="choice" id="chooseCard" hidden>
+      <button type="button" id="chooseRegister"><span class="ic">📝</span><span><strong>Buat Akun Admin</strong><small>Belum punya akun? Daftar dulu, lalu login.</small></span></button>
+      <button type="button" id="chooseLogin"><span class="ic">🔑</span><span><strong>Login Langsung</strong><small>Sudah punya akun? Masuk dengan username &amp; password.</small></span></button>
+    </div>
+
+    <!-- ===== TAB 1a: FORM DAFTAR ADMIN (kalau belum ada akun sama sekali) ===== -->
+    <div class="form-card login-card" id="registerCard" hidden>
+      <h2>Daftar Admin</h2>
+      <p class="hint">Buat username dan password. Setelah daftar kamu akan diarahkan ke halaman Login.</p>
+      <form id="registerForm" autocomplete="off">
+        <div class="field"><label for="rUser">Username Admin</label><input id="rUser" type="text" autocomplete="off" minlength="3" required></div>
+        <div class="field"><label for="rPass">Password</label><input id="rPass" type="password" autocomplete="new-password" minlength="6" required></div>
+        <div class="field"><label for="rPass2">Ulangi Password</label><input id="rPass2" type="password" autocomplete="new-password" minlength="6" required></div>
+        <div class="actions"><button class="btn primary" type="submit" id="registerBtn">Daftar Akun</button></div>
+        <p id="registerStatus" class="form-status" role="status"></p>
+      </form>
+      <p style="margin-top:14px;text-align:center"><button class="linklike" type="button" id="backFromRegister">← Kembali ke pilihan</button></p>
+    </div>
+
+    <!-- ===== TAB 2a: FORM LOGIN ===== -->
+    <div class="form-card login-card" id="loginCard" hidden>
+      <form id="loginForm" autocomplete="on">
+        <div class="field"><label for="user">Username</label><input id="user" type="text" autocomplete="username" required></div>
+        <div class="field"><label for="pass">Password</label><input id="pass" type="password" autocomplete="current-password" required></div>
+        <div class="actions"><button class="btn primary" type="submit" id="loginBtn">Masuk</button></div>
+        <p id="loginStatus" class="form-status" role="status"></p>
+      </form>
+      <p style="margin-top:14px;text-align:center"><button class="linklike" type="button" id="toForgot">Lupa password?</button></p>
+      <p style="margin-top:8px;text-align:center"><button class="linklike" type="button" id="backFromLogin">← Kembali ke pilihan</button></p>
+    </div>
+
+    <!-- ===== TAB 2b: LUPA PASSWORD (kirim kode) ===== -->
+    <div class="form-card login-card" id="forgotCard" hidden>
+      <h2>Lupa Password</h2>
+      <p class="hint">Masukkan email pemulihan yang kamu daftarkan. Kode reset akan dikirim ke email itu.</p>
+      <form id="forgotForm" autocomplete="off">
+        <div class="field"><label for="fEmail">Email Pemulihan</label><input id="fEmail" type="email" required></div>
+        <div class="actions"><button class="btn primary" type="submit" id="forgotBtn">Kirim Kode</button></div>
+        <p id="forgotStatus" class="form-status" role="status"></p>
+      </form>
+      <p style="margin-top:14px;text-align:center"><button class="linklike" type="button" id="toLoginFromForgot">← Kembali ke login</button></p>
+    </div>
+
+    <!-- ===== TAB 2c: RESET PASSWORD (kode + password baru) ===== -->
+    <div class="form-card login-card" id="resetCard" hidden>
+      <h2>Buat Password Baru</h2>
+      <p class="hint">Masukkan kode 6 digit dari email, lalu buat password baru.</p>
+      <form id="resetForm" autocomplete="off">
+        <div class="field"><label for="rCode">Kode dari Email</label><input id="rCode" type="text" inputmode="numeric" maxlength="6" required></div>
+        <div class="field"><label for="nPass">Password Baru</label><input id="nPass" type="password" autocomplete="new-password" minlength="6" required></div>
+        <div class="field"><label for="nPass2">Ulangi Password Baru</label><input id="nPass2" type="password" autocomplete="new-password" minlength="6" required></div>
+        <div class="actions"><button class="btn primary" type="submit" id="resetBtn">Ganti Password &amp; Masuk</button></div>
+        <p id="resetStatus" class="form-status" role="status"></p>
+      </form>
+      <p style="margin-top:14px;text-align:center"><button class="linklike" type="button" id="toLoginFromReset">← Kembali ke login</button></p>
+    </div>
+
+    <div class="config-note" id="oldNote" hidden>
+      ⚠️ <strong>Backend belum diperbarui.</strong> Script Google yang aktif masih versi lama. Tempel ulang isi <code>Code.gs</code> terbaru di Apps Script, lalu <strong>Deploy → Manage deployments → ✏️ Edit → Version: New version → Deploy</strong>.
+    </div>
+  </div></section>
+</main>
+
+<script>
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbxsXZ7B1mIwzrtJUxFsGqT-24MgtmvgsVRp7sgVojYvdaJHBFu-uy19mqmpU6cYR5QO/exec";
+const $=id=>document.getElementById(id);
+// Tombol mata: lihat / sembunyikan password
+(function(){
+  const OPEN='<svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+  const SHUT='<svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.9 10.9 0 0 1 12 19C5 19 1 12 1 12a18.5 18.5 0 0 1 5.06-5.94M9.9 4.24A9.1 9.1 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg>';
+  ['rPass','rPass2','pass'].forEach(id=>{
+    const inp=document.getElementById(id);if(!inp)return;
+    const wrap=document.createElement('div');wrap.className='pw-wrap';
+    inp.parentNode.insertBefore(wrap,inp);wrap.appendChild(inp);
+    const b=document.createElement('button');b.type='button';b.className='pw-eye';
+    const set=show=>{inp.type=show?'text':'password';b.innerHTML=show?SHUT:OPEN;b.setAttribute('aria-label',show?'Sembunyikan password':'Lihat password');b.setAttribute('aria-pressed',show)};
+    set(false);b.addEventListener('click',()=>{set(inp.type==='password');inp.focus()});
+    wrap.appendChild(b);
+  });
+})();
+const params=new URLSearchParams(location.search);
+const goingToForm = params.get('next')==='database.html';
+const allCards=['chooseCard','registerCard','loginCard','forgotCard','resetCard'];
+
+function showCard(id){allCards.forEach(c=>$(c).hidden=(c!==id))}
+function setTab(which){
+  if(which==='register'){ showCard('registerCard'); $('rUser').focus(); }
+  else if(which==='login'){ showCard('loginCard'); $('user').focus(); }
+  else { showCard('chooseCard'); }
+}
+
+async function api(payload){
+  const r=await fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
+  return r.json();
+}
+function afterLogin(token){
+  sessionStorage.setItem('seburing-admin-token',token);
+  location.replace(goingToForm?'database.html':'admin-data.html');
+}
+const OLD_MSG='Backend belum diperbarui: server masih versi lama dan belum mengenali fitur ini. Tempel ulang Code.gs terbaru di Apps Script lalu Deploy > Manage deployments > Edit > New version.';
+function friendly(m){return /wajib diisi|Aksi tidak dikenal/i.test(m||'')?OLD_MSG:m}
+
+// -------- Cek backend, lalu tampilkan tab "Buat Akun" dulu (default) --------
+(async function init(){
+  try{
+    const j=await api({action:'status'});
+    if(!(Number(j.version)>=7)){
+      $('oldNote').hidden=false;
+      $('pageEyebrow').textContent='⚠️ Backend Belum Diperbarui';
+      $('loginTitle').textContent='Server Masih Versi Lama';
+      $('loginDesc').textContent='Perbarui Code.gs di Apps Script dulu, baru fitur Buat Akun/Login/Lupa Password versi terbaru bisa dipakai.';
+      return;
+    }
+    $('loginTitle').textContent = 'Akses Halaman Admin';
+    $('loginDesc').textContent = 'Pilih salah satu: buat akun admin baru, atau langsung login kalau sudah punya akun.';
+    setTab('choose'); // tampilkan pilihan dulu
+    if(params.get('expired')){
+      setTab('login');
+      const s=$('loginStatus');s.textContent='Sesi berakhir. Silakan login lagi.';s.className='form-status err';
+    }
+  }catch(err){
+    $('oldNote').hidden=false;
+    $('loginTitle').textContent='Tidak Bisa Terhubung ke Server';
+    $('loginDesc').textContent='Coba muat ulang halaman ini beberapa saat lagi.';
+  }
+})();
+
+$('chooseRegister').addEventListener('click',()=>setTab('register'));
+$('chooseLogin').addEventListener('click',()=>setTab('login'));
+$('backFromRegister').addEventListener('click',()=>setTab('choose'));
+$('backFromLogin').addEventListener('click',()=>setTab('choose'));
+
+// -------- DAFTAR ADMIN --------
+$('registerForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const st=$('registerStatus'),btn=$('registerBtn');
+  st.textContent='';st.className='form-status';
+  const user=$('rUser').value.trim(),pass=$('rPass').value,pass2=$('rPass2').value;
+  if(pass!==pass2){st.textContent='Password dan ulangi password tidak sama.';st.classList.add('err');return}
+  if(pass.length<6){st.textContent='Password minimal 6 karakter.';st.classList.add('err');return}
+  btn.disabled=true;btn.textContent='Mendaftarkan…';
+  try{
+    const j=await api({action:'register',username:user,password:pass});
+    if(j.status!=='success')throw Error(friendly(j.message)||'Gagal mendaftar');
+    st.textContent='Akun admin berhasil dibuat! Silakan login dengan username & password tadi.';st.classList.add('ok');
+    $('registerForm').reset();
+    setTimeout(()=>{
+      setTab('login');
+      $('user').value=user; // bantu isi otomatis username yang baru dibuat
+      $('pass').focus();
+    },1200);
+  }catch(err){
+    st.textContent='Gagal: '+err.message;st.classList.add('err');
+  }finally{
+    btn.disabled=false;btn.textContent='Daftar Akun';
+  }
+});
+
+// -------- LOGIN --------
+$('loginForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const st=$('loginStatus'),btn=$('loginBtn');
+  st.textContent='';st.className='form-status';
+  btn.disabled=true;btn.textContent='Memeriksa…';
+  try{
+    const j=await api({action:'login',username:$('user').value.trim(),password:$('pass').value});
+    if(j.status!=='success'||!j.token)throw Error(friendly(j.message)||'Login gagal');
+    st.textContent='Login berhasil…';st.classList.add('ok');
+    afterLogin(j.token);
+  }catch(err){
+    st.textContent='Gagal: '+err.message;st.classList.add('err');
+    btn.disabled=false;btn.textContent='Masuk';
+  }
+});
+
+// -------- LUPA PASSWORD: kirim kode --------
+$('toForgot').addEventListener('click',()=>{showCard('forgotCard');$('fEmail').focus()});
+$('toLoginFromForgot').addEventListener('click',()=>setTab('login'));
+$('toLoginFromReset').addEventListener('click',()=>setTab('login'));
+
+$('forgotForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const st=$('forgotStatus'),btn=$('forgotBtn');
+  st.textContent='';st.className='form-status';
+  btn.disabled=true;btn.textContent='Mengirim…';
+  try{
+    const j=await api({action:'forgot',email:$('fEmail').value.trim()});
+    if(j.status!=='success')throw Error(friendly(j.message)||'Gagal mengirim kode');
+    st.textContent='Kode terkirim! Cek email kamu.';st.classList.add('ok');
+    setTimeout(()=>{showCard('resetCard');$('rCode').focus()},900);
+  }catch(err){
+    st.textContent='Gagal: '+err.message;st.classList.add('err');
+  }finally{
+    btn.disabled=false;btn.textContent='Kirim Kode';
+  }
+});
+
+// -------- RESET PASSWORD: kode + password baru --------
+$('resetForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const st=$('resetStatus'),btn=$('resetBtn');
+  st.textContent='';st.className='form-status';
+  const code=$('rCode').value.trim(),p1=$('nPass').value,p2=$('nPass2').value;
+  if(p1!==p2){st.textContent='Password baru tidak sama.';st.classList.add('err');return}
+  if(p1.length<6){st.textContent='Password minimal 6 karakter.';st.classList.add('err');return}
+  btn.disabled=true;btn.textContent='Memproses…';
+  try{
+    const j=await api({action:'reset',code:code,newPassword:p1});
+    if(j.status!=='success'||!j.token)throw Error(friendly(j.message)||'Gagal reset password');
+    st.textContent='Password diganti. Masuk…';st.classList.add('ok');
+    afterLogin(j.token);
+  }catch(err){
+    st.textContent='Gagal: '+err.message;st.classList.add('err');
+    btn.disabled=false;btn.textContent='Ganti Password & Masuk';
+  }
+});
+</script>
+</body>
+</html>
